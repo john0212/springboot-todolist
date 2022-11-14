@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -32,5 +34,25 @@ public class TaskController {
         theModel.addAttribute("tasks",taskList);
 
         return "tasks/list-tasks";
+    }
+
+    @GetMapping("/showFormForAdd")
+    public String showFormForAdd(Model theModel){
+
+        Task task = new Task();
+
+        theModel.addAttribute("task",task);
+
+        return "tasks/task-form";
+    }
+
+    @PostMapping("/save")
+    // 這裡的 @ModelAttribute的 task 要跟 task-form 裡的  th:object="${task} 這裡一樣
+    public String saveTask(@ModelAttribute("task") Task theTask){
+
+        // save the task
+        taskService.save(theTask);
+
+        return "redirect:/tasks/list";
     }
 }
