@@ -59,7 +59,7 @@
 
                 <!-- Add delete button/link-->
                 <a th:href="@{/tasks/delete(taskId=${tempTask.id})}"
-                   class="btn btn-info btn-sm"
+                   class="btn btn-danger btn-sm"
                    onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
                     Delete
                 </a>

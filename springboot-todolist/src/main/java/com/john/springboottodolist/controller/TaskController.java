@@ -59,8 +59,17 @@ public class TaskController {
         // 從 service 取得 task
         Task theTask = taskService.findById(theId);
 
-        theModel.addAttribute("task",theTask);
+        theModel.addAttribute("task", theTask);
 
         return "tasks/task-form";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("taskId") int theId) {
+
+        // 刪除
+        taskService.deleteById(theId);
+
+        return "redirect:/tasks/list";
     }
 }
