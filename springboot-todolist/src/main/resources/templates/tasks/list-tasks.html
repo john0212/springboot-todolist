@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <style>
+        .table-striped>tbody>tr:nth-child(odd)>td,
+        .table-striped>tbody>tr:nth-child(odd)>th {
+            background-color: #F0F8FF; // Choose your own color here. see https://www.w3schools.com/colors/colors_names.asp
+        }
+    </style>
+
+
+
+    <title>Task Directory</title>
+</head>
+
+<body>
+
+
+<div class="container">
+    <h3>Task Directory</h3>
+    <hr>
+
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Task Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="tempTask : ${tasks}">
+
+            <td th:text="${tempTask.taskName}" />
+            <td th:text="${tempTask.startDate}" />
+            <td th:text="${tempTask.endDate}" />
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+
+</html>
