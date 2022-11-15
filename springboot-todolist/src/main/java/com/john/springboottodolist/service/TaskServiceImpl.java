@@ -3,6 +3,9 @@ package com.john.springboottodolist.service;
 import com.john.springboottodolist.dao.TaskRepository;
 import com.john.springboottodolist.entity.Task;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +22,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findAll() {
-        return taskRepository.findAllByOrderByTaskNameAsc();
+    public Page<Task> findAll() {
+
+        Pageable pageable = PageRequest.of(0,10);
+
+        return taskRepository.findAllByOrderByTaskNameAsc(pageable);
     }
 
     @Override
@@ -57,7 +63,8 @@ public class TaskServiceImpl implements TaskService {
         if (theName != null && (theName.trim().length() > 0)) {
             result = taskRepository.findByTaskNameContainsAllIgnoreCase(theName);
         } else {
-            result = findAll();
+            // 這裡還沒完成，用 search 沒辦法用分頁效果
+//            result = findAll();
         }
 
         return result;

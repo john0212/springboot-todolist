@@ -1,12 +1,13 @@
 package com.john.springboottodolist.service;
 
 import com.john.springboottodolist.entity.Task;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface TaskService {
 
-    List<Task> findAll();
+    Page<Task> findAll();
 
     Task findById(int id);
 
