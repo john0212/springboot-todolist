@@ -49,5 +49,19 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
+    @Override
+    public List<Task> searchBy(String theName) {
+
+        List<Task> result = null;
+
+        if (theName != null && (theName.trim().length() > 0)) {
+            result = taskRepository.findByTaskNameContainsAllIgnoreCase(theName);
+        } else {
+            result = findAll();
+        }
+
+        return result;
+    }
+
 
 }

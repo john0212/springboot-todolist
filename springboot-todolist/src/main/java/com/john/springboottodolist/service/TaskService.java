@@ -14,4 +14,6 @@ public interface TaskService {
 
     void deleteById(int id);
 
+    List<Task> searchBy(String theName);
+
 }

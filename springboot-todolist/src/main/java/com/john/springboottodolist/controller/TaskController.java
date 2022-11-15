@@ -72,4 +72,15 @@ public class TaskController {
 
         return "redirect:/tasks/list";
     }
+
+    @GetMapping("/search")
+    public String delete(@RequestParam("taskName") String theName, Model theModel) {
+
+        // 刪除任務
+        List<Task> theTask = taskService.searchBy(theName);
+
+        theModel.addAttribute("tasks", theTask);
+
+        return "tasks/list-tasks";
+    }
 }

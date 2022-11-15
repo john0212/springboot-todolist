@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
     List<Task> findAllByOrderByTaskNameAsc();
+
+    List<Task> findByTaskNameContainsAllIgnoreCase(String taskName);
 }
