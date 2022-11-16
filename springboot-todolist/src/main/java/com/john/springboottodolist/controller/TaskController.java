@@ -21,16 +21,31 @@ public class TaskController {
         taskService = theTaskService;
     }
 
+
     // 顯示全部
     @GetMapping("/list")
     public String listTasks(Model theModel) {
+        return listByPage(theModel,1);
 
-        Page<Task> page = taskService.findAll();
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public String listByPage(Model theModel,
+                             @PathVariable("pageNumber") int currentPage){
 
         // 從資料庫取出資料
+        Page<Task> page = taskService.findAll(currentPage);
+
+        long totalItems = page.getTotalElements();
+
+        int totalPages = page.getTotalPages();
+
         List<Task> taskList = page.getContent();
 
         // 添加到 spring model
+        theModel.addAttribute("currentPage", currentPage);
+        theModel.addAttribute("totalItems", totalItems);
+        theModel.addAttribute("totalPages", totalPages);
         theModel.addAttribute("tasks", taskList);
 
         return "tasks/list-tasks";

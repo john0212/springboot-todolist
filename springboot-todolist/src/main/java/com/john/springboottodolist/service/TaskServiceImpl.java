@@ -21,10 +21,10 @@ public class TaskServiceImpl implements TaskService {
         taskRepository = theTaskRepository;
     }
 
-    @Override
-    public Page<Task> findAll() {
 
-        Pageable pageable = PageRequest.of(0,10);
+    public Page<Task> findAll(int pageNumber) {
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
 
         return taskRepository.findAllByOrderByTaskNameAsc(pageable);
     }
