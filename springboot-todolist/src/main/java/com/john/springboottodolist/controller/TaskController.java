@@ -26,7 +26,8 @@ public class TaskController {
     // 顯示全部
     @GetMapping("/list")
     public String listTasks(Model theModel) {
-        return listByPage(theModel, 1,"taskName","asc");
+        String keyword = null;
+        return listByPage(theModel, 1,"taskName","asc",keyword);
 
     }
 
@@ -34,10 +35,11 @@ public class TaskController {
     public String listByPage(Model theModel,
                              @PathVariable("pageNumber") int currentPage,
                              @Param("sortField") String sortField,
-                             @Param("sortDir") String sortDir) {
+                             @Param("sortDir") String sortDir,
+                             @Param("keyword") String keyword) {
 
         // 從資料庫取出資料
-        Page<Task> page = taskService.findAll(currentPage,sortField,sortDir);
+        Page<Task> page = taskService.findAll(currentPage,sortField,sortDir,keyword);
 
         long totalItems = page.getTotalElements();
 
@@ -52,6 +54,7 @@ public class TaskController {
         theModel.addAttribute("tasks", taskList);
         theModel.addAttribute("sortField", sortField);
         theModel.addAttribute("sortDir", sortDir);
+        theModel.addAttribute("keyword", keyword);
 
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
         theModel.addAttribute("reverseSortDir", reverseSortDir);
@@ -99,16 +102,4 @@ public class TaskController {
         return "redirect:/tasks/list";
     }
 
-    @GetMapping("/search")
-    public String delete(@RequestParam("taskName") String theName, Model theModel) {
-
-        // 刪除任務
-//        Page<Task> page = taskService.searchBy(theName);
-
-        List<Task> theTask = taskService.searchBy(theName);
-
-        theModel.addAttribute("tasks", theTask);
-
-        return "tasks/list-tasks";
-    }
 }

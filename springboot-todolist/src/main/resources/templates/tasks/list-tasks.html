@@ -50,34 +50,43 @@
         <br><br>
     </div>
 
-    <form th:action="@{'/tasks/search' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" class="form-inline">
     <!-- Add a button -->
     <a th:href="@{/tasks/showFormForAdd}"
        class="btn btn-primary btn-sm mr-5 mb-3">
         Add Task
     </a>
 
-        <input class="form-control  ml-3 mr-sm-2 mb-3" type="search" name="taskName" placeholder="Search by task" />
+    <div>
+        <form th:action="@{/tasks/page/1}">
+            <input type="hidden" name="sortField" th:value="${sortField}" />
+            <input type="hidden" name="sortDir" th:value="${sortDir}" />
+            Search:
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Search by task"/>
+            &nbsp;
+            <input type="submit" value="Search" class="btn btn-success mb-3" />
+            &nbsp;
+            <input type="button" value="Clear" onclick="clearFilter()" class="btn btn-success mb-3"/>
+        </form>
+    </div>
 
-        <button class="btn btn-success mb-3" type="submit">Search</button>
+    <div>&nbsp;</div>
 
-    </form>
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
             <th>
-                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=taskName&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=taskName&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
                     Task Name
                 </a>
             </th>
             <th>
-                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=startDate&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=startDate&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
                 Start Date
                 </a>
             </th>
             <th>
-                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=endDate&sortDir=' + ${reverseSortDir}}">
+                <a th:href="@{'/tasks/page/' + ${currentPage} + '?sortField=endDate&sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
                 End Date
                 </a>
             </th>
@@ -128,28 +137,29 @@
     Total Tasks : [[${totalItems}]] - Page [[${currentPage}]] of [[${totalPages}]]
     &nbsp; - &nbsp;
 
-    <a th:if="${currentPage > 1}" th:href="@{'/tasks/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">First</a>
+    <a th:if="${currentPage > 1}" th:href="@{'/tasks/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">First</a>
     <span th:unless="${currentPage > 1}">First</span>
 
     &nbsp;
 
-    <a th:if="${currentPage > 1}" th:href="@{'/tasks/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Privious</a>
+    <a th:if="${currentPage > 1}" th:href="@{'/tasks/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Privious</a>
     <a th:unless="${currentPage > 1}">Privious</a>
 
     &nbsp;
 
     <span th:each="i: ${#numbers.sequence(1,totalPages)}">
-        <a th:if="${i != currentPage}" th:href="@{'/tasks/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+        <a th:if="${i != currentPage}"
+           th:href="@{'/tasks/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${i}]]</a>
         <span th:unless="${i != currentPage}">[[${i}]]</span>&nbsp;&nbsp;
         &nbsp;&nbsp;
     </span>
 
-    <a th:if="${currentPage < totalPages}" th:href="@{'/tasks/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/tasks/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Next</a>
     <span th:unless="${currentPage < totalPages}">Next</span>
 
     &nbsp;
 
-    <a th:if="${currentPage < totalPages}" th:href="@{'/tasks/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/tasks/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Last</a>
     <span th:unless="${currentPage < totalPages}">Last</span>
 
 </div>
@@ -161,6 +171,12 @@
     <input type="submit" value="Logout" class="btn btn-outline-primary mt-2" />
 
 </form>
+
+<script type="text/javascript">
+    function clearFilter(){
+        window.location = "/tasks/list";
+    }
+</script>
 
 </body>
 

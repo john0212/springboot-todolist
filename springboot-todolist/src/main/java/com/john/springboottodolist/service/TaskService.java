@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    Page<Task> findAll(int pageNumber, String sortField, String sort);
+    Page<Task> findAll(int pageNumber, String sortField, String sort,String keyword);
 
     Task findById(int id);
 
@@ -15,6 +15,5 @@ public interface TaskService {
 
     void deleteById(int id);
 
-    List<Task> searchBy(String theName);
 
 }

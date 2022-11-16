@@ -23,14 +23,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    public Page<Task> findAll(int pageNumber, String sortField, String sortDir) {
+    public Page<Task> findAll(int pageNumber, String sortField, String sortDir,String keyword) {
 
         Sort sort = Sort.by(sortField);
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
         Pageable pageable = PageRequest.of(pageNumber - 1, 5, sort);
 
-
+        if (keyword != null){
+            return taskRepository.findAll(keyword,pageable);
+        }
 
         return taskRepository.findAll(pageable);
     }
@@ -61,20 +63,6 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
-    @Override
-    public List<Task> searchBy(String theName) {
-
-        List<Task> result = null;
-
-        if (theName != null && (theName.trim().length() > 0)) {
-            result = taskRepository.findByTaskNameContainsAllIgnoreCase(theName);
-        } else {
-            // 這裡還沒完成，用 search 沒辦法用分頁效果
-//            result = findAll();
-        }
-
-        return result;
-    }
 
 
 }
