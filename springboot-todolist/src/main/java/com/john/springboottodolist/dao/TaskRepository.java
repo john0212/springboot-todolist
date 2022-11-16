@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface TaskRepository extends CrudRepository<Task, Integer> {
-    Page<Task> findAllByOrderByTaskNameAsc(Pageable pageable);
+    Page<Task> findAll(Pageable pageable);
 
     List<Task> findByTaskNameContainsAllIgnoreCase(String taskName);
 }

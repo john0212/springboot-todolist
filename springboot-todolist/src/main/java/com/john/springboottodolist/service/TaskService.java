@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    Page<Task> findAll(int pageNumber);
+    Page<Task> findAll(int pageNumber, String sortField, String sort);
 
     Task findById(int id);
 

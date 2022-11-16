@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,11 +23,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
 
-    public Page<Task> findAll(int pageNumber) {
+    public Page<Task> findAll(int pageNumber, String sortField, String sortDir) {
 
-        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
+        Sort sort = Sort.by(sortField);
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
-        return taskRepository.findAllByOrderByTaskNameAsc(pageable);
+        Pageable pageable = PageRequest.of(pageNumber - 1, 5, sort);
+
+
+
+        return taskRepository.findAll(pageable);
     }
 
     @Override

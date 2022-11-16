@@ -4,6 +4,7 @@ import com.john.springboottodolist.entity.Task;
 import com.john.springboottodolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,16 +26,18 @@ public class TaskController {
     // 顯示全部
     @GetMapping("/list")
     public String listTasks(Model theModel) {
-        return listByPage(theModel,1);
+        return listByPage(theModel, 1,"taskName","asc");
 
     }
 
     @GetMapping("/page/{pageNumber}")
     public String listByPage(Model theModel,
-                             @PathVariable("pageNumber") int currentPage){
+                             @PathVariable("pageNumber") int currentPage,
+                             @Param("sortField") String sortField,
+                             @Param("sortDir") String sortDir) {
 
         // 從資料庫取出資料
-        Page<Task> page = taskService.findAll(currentPage);
+        Page<Task> page = taskService.findAll(currentPage,sortField,sortDir);
 
         long totalItems = page.getTotalElements();
 
@@ -47,6 +50,11 @@ public class TaskController {
         theModel.addAttribute("totalItems", totalItems);
         theModel.addAttribute("totalPages", totalPages);
         theModel.addAttribute("tasks", taskList);
+        theModel.addAttribute("sortField", sortField);
+        theModel.addAttribute("sortDir", sortDir);
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+        theModel.addAttribute("reverseSortDir", reverseSortDir);
 
         return "tasks/list-tasks";
     }
