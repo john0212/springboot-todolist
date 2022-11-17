@@ -13,7 +13,6 @@ public interface TaskRepository extends CrudRepository<Task, Integer> {
     @Query("SELECT p FROM Task p WHERE p.taskName LIKE %?1%")
     Page<Task> findAll(String keyword, Pageable pageable);
 
-    List<Task> findByTaskNameContainsAllIgnoreCase(String taskName);
 
     Page<Task> findAll(Pageable pageable);
 }
